@@ -26,9 +26,11 @@ import OpenTelemetryApi
   import KSCrashFilters
 #endif
 
+import Sessions
+
 protocol CrashProtocol {
   static func install()
-  static func cacheCrashContext(session: AwsSession?,
+  static func cacheCrashContext(session: Session?,
                                 userId: String?,
                                 screenName: String?)
 
@@ -93,7 +95,7 @@ public class AwsKSCrashInstrumentation: CrashProtocol {
       object: nil,
       queue: nil
     ) { notification in
-      if let session = notification.object as? AwsSession {
+      if let session = notification.object as? Session {
         queue.async {
           cacheCrashContext(session: session)
         }
@@ -130,7 +132,7 @@ public class AwsKSCrashInstrumentation: CrashProtocol {
     observers.append(screenObserver)
   }
 
-  static func cacheCrashContext(session: AwsSession? = nil,
+  static func cacheCrashContext(session: Session? = nil,
                                 userId: String? = nil,
                                 screenName: String? = nil) {
     var userInfo: [String: Any] = [:]
@@ -140,7 +142,7 @@ public class AwsKSCrashInstrumentation: CrashProtocol {
     userInfo[AwsUserSemvConv.id] = userId
 
     // session
-    let sessionManager = AwsSessionManagerProvider.getInstance()
+    let sessionManager = SessionManagerProvider.getInstance()
     if let session = session ?? sessionManager.peekSession() {
       userInfo[AwsSessionSemConv.id] = session.id
       if let prevSessionId = session.previousId {

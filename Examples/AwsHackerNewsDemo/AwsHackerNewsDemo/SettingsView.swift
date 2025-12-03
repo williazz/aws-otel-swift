@@ -16,6 +16,7 @@
 import SwiftUI
 import AwsOpenTelemetryCore
 import OpenTelemetryApi
+import Sessions
 
 struct SettingsView: View {
   @State private var sessionData: [(String, String)] = []
@@ -170,7 +171,7 @@ struct SettingsView: View {
       ("Memory Test", "Tap to configure")
     ]
 
-    guard let currentSession = AwsSessionManagerProvider.getInstance().peekSession() else {
+    guard let currentSession = SessionManagerProvider.getInstance().peekSession() else {
       sessionData = [
         ("User ID", "nil"),
         ("Previous Session", "nil"),
@@ -183,7 +184,7 @@ struct SettingsView: View {
     let expireTime = currentSession.expireTime
     let userId = AwsUIDManagerProvider.getInstance().getUID()
     let timeToExpiry = expireTime.timeIntervalSinceNow
-    let previousSessionId = AwsSessionManagerProvider.getInstance().peekSession()?.previousId ?? "nil"
+    let previousSessionId = SessionManagerProvider.getInstance().peekSession()?.previousId ?? "nil"
 
     sessionData = [
       ("User ID", userId),
@@ -201,7 +202,7 @@ struct SettingsView: View {
   }
 
   private func updateExpiryTime() {
-    guard let currentSession = AwsSessionManagerProvider.getInstance().peekSession() else {
+    guard let currentSession = SessionManagerProvider.getInstance().peekSession() else {
       return
     }
 
@@ -997,7 +998,7 @@ struct TelemetryGeneratorView: View {
   }
 
   private func loadSessionData() {
-    guard let currentSession = AwsSessionManagerProvider.getInstance().peekSession() else {
+    guard let currentSession = SessionManagerProvider.getInstance().peekSession() else {
       sessionId = "nil"
       sessionExpiry = "nil"
       return
@@ -1022,7 +1023,7 @@ struct TelemetryGeneratorView: View {
   }
 
   private func updateExpiryTime() {
-    guard let currentSession = AwsSessionManagerProvider.getInstance().peekSession() else {
+    guard let currentSession = SessionManagerProvider.getInstance().peekSession() else {
       sessionExpiry = "nil"
       return
     }
