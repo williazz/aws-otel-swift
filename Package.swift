@@ -16,8 +16,8 @@ let package = Package(
     .library(name: "AwsOpenTelemetryAuth", targets: ["AwsOpenTelemetryAuth"])
   ],
   dependencies: [
-    .package(url: "https://github.com/open-telemetry/opentelemetry-swift-core.git", from: "2.2.0"),
-    .package(url: "https://github.com/open-telemetry/opentelemetry-swift.git", from: "2.2.0"),
+    .package(path: "../opentelemetry-swift-core"),
+    .package(path: "../opentelemetry-swift"),
     .package(url: "https://github.com/awslabs/aws-sdk-swift", from: "1.3.32"),
     .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.134.0"),
     .package(url: "https://github.com/kstenerud/KSCrash.git", .upToNextMajor(from: "2.4.0")),
@@ -31,6 +31,8 @@ let package = Package(
         .product(name: "StdoutExporter", package: "opentelemetry-swift-core"),
         .product(name: "OpenTelemetryProtocolExporterHTTP", package: "opentelemetry-swift"),
         .product(name: "URLSessionInstrumentation", package: "opentelemetry-swift"),
+        .product(name: "Sessions", package: "opentelemetry-swift"),
+        .product(name: "Crash", package: "opentelemetry-swift"),
         .product(name: "Installations", package: "KSCrash"),
         .product(name: "CrashReporter", package: "plcrashreporter", condition: .when(platforms: [.iOS, .macOS, .tvOS, .visionOS]))
       ],

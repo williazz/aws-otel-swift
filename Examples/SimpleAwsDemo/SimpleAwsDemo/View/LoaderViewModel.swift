@@ -18,6 +18,7 @@ import SwiftUI
 import AwsOpenTelemetryCore
 import Combine
 import OpenTelemetryApi
+import Sessions
 
 /**
  * View model responsible for handling demo operations and telemetry.
@@ -66,7 +67,7 @@ class LoaderViewModel: ObservableObject {
   }
 
   func renewSession() {
-    AwsSessionManagerProvider.getInstance().getSession()
+    SessionManagerProvider.getInstance().getSession()
   }
 
   func showUserInfo() {
@@ -220,7 +221,7 @@ class LoaderViewModel: ObservableObject {
   /// Updates the current time string
   private func updateSessionDetails() {
     let currentTime = timeFormatter.string(from: Date())
-    guard let session = AwsSessionManagerProvider.getInstance().peekSession() else {
+    guard let session = SessionManagerProvider.getInstance().peekSession() else {
       resultMessage = "no session"
       return
     }

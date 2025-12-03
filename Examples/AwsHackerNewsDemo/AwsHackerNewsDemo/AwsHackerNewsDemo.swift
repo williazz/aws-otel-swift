@@ -18,6 +18,7 @@ import SwiftUI
 import Foundation
 import AwsOpenTelemetryCore
 import OpenTelemetryApi
+import Sessions
 
 let artificialDelay: TimeInterval = 0.25
 
@@ -2112,7 +2113,7 @@ class SettingsViewController: UIViewController {
       ("Trigger App Hang", "Tap to configure")
     ]
 
-    guard let currentSession = AwsSessionManagerProvider.getInstance().peekSession() else {
+    guard let currentSession = SessionManagerProvider.getInstance().peekSession() else {
       sessionData = [
         ("User ID", "nil"),
         ("Previous Session", "nil"),
@@ -2126,7 +2127,7 @@ class SettingsViewController: UIViewController {
     let expireTime = currentSession.expireTime
     let userId = AwsUIDManagerProvider.getInstance().getUID()
     let timeToExpiry = expireTime.timeIntervalSinceNow
-    let previousSessionId = AwsSessionManagerProvider.getInstance().peekSession()?.previousId ?? "nil"
+    let previousSessionId = SessionManagerProvider.getInstance().peekSession()?.previousId ?? "nil"
 
     sessionData = [
       ("User ID", userId),
@@ -2146,7 +2147,7 @@ class SettingsViewController: UIViewController {
   }
 
   private func updateExpiryTime() {
-    guard let currentSession = AwsSessionManagerProvider.getInstance().peekSession() else {
+    guard let currentSession = SessionManagerProvider.getInstance().peekSession() else {
       return
     }
 
